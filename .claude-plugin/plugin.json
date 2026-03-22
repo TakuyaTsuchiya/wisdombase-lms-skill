@@ -1,0 +1,11 @@
+{
+  "name": "wisdombase-lms-skill",
+  "description": "WisdomBase LMSのコース構築を自動化するプラグイン",
+  "version": "1.0.0",
+  "author": {
+    "name": "TakuyaTsuchiya"
+  },
+  "homepage": "https://github.com/TakuyaTsuchiya/wisdombase-lms-skill",
+  "repository": "https://github.com/TakuyaTsuchiya/wisdombase-lms-skill",
+  "license": "MIT"
+}
