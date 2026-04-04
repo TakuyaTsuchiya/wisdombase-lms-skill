@@ -34,21 +34,32 @@
   // };
   // ★★★ ここまで ★★★
 
+  // ★ タイトル35字チェック（35字超だとサイレント失敗する。gotchas.md #11）
+  if (EXAM_DATA.title.length > 35) {
+    console.error('❌ タイトルが35字を超えています（' + EXAM_DATA.title.length + '字）。35字以内にしてください。');
+    return;
+  }
+
   console.log('📝 Step1: レクチャー作成中...');
   const createFormData = new URLSearchParams();
   createFormData.append('lecture[title]', EXAM_DATA.title);
   createFormData.append('lecture[type]', 'ExamLecture');
   createFormData.append('commit', 'レクチャーの編集に進む');
-  await fetch(`/courses/${COURSE_ID}/lectures`, {
+  // ★ ExamLecture作成では X-Requested-With を付けない（gotchas.md #12）
+  const createRes = await fetch(`/courses/${COURSE_ID}/lectures`, {
     method: 'POST',
-    headers: { 'X-CSRF-Token': csrfToken, 'X-Requested-With': 'XMLHttpRequest' },
+    headers: { 'X-CSRF-Token': csrfToken },
     body: createFormData,
   });
 
-  const pageRes = await fetch(`/ja/courses/${COURSE_ID}/edit`);
-  const html = await pageRes.text();
-  const matches = [...html.matchAll(/\/lectures\/(\d+)\/edit/g)];
-  const lectureId = parseInt(matches[matches.length - 1][1]);
+  // ★ リダイレクトURLからレクチャーIDを取得（ページ再取得方式は既存レクチャーの誤取得リスクあり）
+  const redirectUrl = createRes.url;
+  const lectureIdMatch = redirectUrl.match(/\/lectures\/(\d+)/);
+  if (!lectureIdMatch) {
+    console.error('❌ レクチャー作成失敗。URL:', redirectUrl);
+    return;
+  }
+  const lectureId = parseInt(lectureIdMatch[1]);
   console.log(`  ✅ レクチャー作成完了 (ID: ${lectureId})`);
   await sleep(500);
 

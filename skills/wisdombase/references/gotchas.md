@@ -82,3 +82,15 @@
 ## 10. 動画ファイル命名規則
 
 `M3_S0_V1.mp4`, `M3_S1_V1.mp4` など `{モジュール}_{セクション}_{動画番号}.mp4` 形式。
+
+## 11. レクチャータイトルは35字以内
+
+- `lecture[title]` が35字を超えるとレクチャー作成POSTがサイレント失敗する（200を返すがリダイレクト先がコース編集ページに戻る＝レクチャー未作成）
+- ExamLectureで確認済み。他のタイプでも同様の可能性あり
+- スクリプト生成時にタイトル長を事前チェックすること
+
+## 12. ExamLecture作成時の X-Requested-With
+
+- ExamLectureの作成POSTに `X-Requested-With: 'XMLHttpRequest'` を付けると、リダイレクト先が `/lectures/{id}/edit` ではなく `/courses/{id}/edit` に変わり、レクチャーIDを取得できない
+- Gotcha #3 の DocタイプAPIと同じ挙動。ExamLecture作成は `X-CSRF-Token` のみで送信する
+- リダイレクトURLの `res.url` からレクチャーIDを取得するのが確実（ページ再取得で最後のIDを拾う方式は、クイズ等の既存レクチャーがあると誤ったIDを返す）
