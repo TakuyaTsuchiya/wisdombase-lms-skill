@@ -12,18 +12,36 @@ WisdomBase LMSのコース構築を自動化するClaude Codeプラグイン。
 - トラック制限の設定
 - 既存クイズの更新・抽出
 
+## 必要な環境
+
+- **Claude Code** がインストール済みであること
+- **WisdomBase 管理画面** にログイン済みのブラウザ（`https://ai-plus.share-wis.com/`）
+- **DevToolsコンソール** での操作に抵抗がないこと（生成されたスクリプトをコンソールに貼って実行する設計）
+- コースは事前にWisdomBase管理画面で **手動作成済み** であること（5桁のコースIDが必要）
+
 ## インストール
 
-```bash
-# GitHubから直接インストール
-claude plugin add --from github TakuyaTsuchiya/wisdombase-lms-skill
+Claude Codeを起動して、以下を順に入力してください:
+
+```
+/plugin marketplace add TakuyaTsuchiya/wisdombase-lms-skill
+/plugin install wisdombase@wisdombase-lms-skill
 ```
 
-または、ローカルでテスト:
+それぞれインストールの確認プロンプトが出るので承認します。完了すると `/wisdombase` で呼び出せるようになります。
 
-```bash
-git clone https://github.com/TakuyaTsuchiya/wisdombase-lms-skill.git
-claude --plugin-dir ./wisdombase-lms-skill
+### アップデート
+
+新しいバージョンが出たとき:
+
+```
+/plugin update wisdombase@wisdombase-lms-skill
+```
+
+### アンインストール
+
+```
+/plugin uninstall wisdombase@wisdombase-lms-skill
 ```
 
 ## 使い方
@@ -40,13 +58,16 @@ claude --plugin-dir ./wisdombase-lms-skill
 WisdomBaseでコース45183にクイズを追加して
 ```
 
+スキルが起動すると、必要な情報（コースID、動画タイトル、クイズ内容など）を順番にヒアリングしてきます。情報が揃うとスクリプトが `~/Desktop/wisdombase-scripts/` に生成されるので、WisdomBase管理画面のDevToolsコンソールに貼って実行してください。
+
 ### 全体フロー
 
 1. **動画レクチャー作成** → レクチャーIDが発番される
 2. **動画アップロード** → ファイルピッカーで動画を選択
 3. **動画レクチャー公開**
 4. **クイズ作成** → 問題登録・順番変更・公開を一括実行
-5. **トラック制限設定** → 動画にクイズ完了条件を設定
+5. **実習課題作成** → リッチHTMLで課題文・解説を作成
+6. **トラック制限設定** → 動画にクイズ完了条件を設定
 
 ### 設計思想
 
@@ -81,6 +102,10 @@ wisdombase-lms-skill/
 │           └── extract_quizzes.js        # クイズデータ抽出
 └── README.md
 ```
+
+## バグ報告・要望
+
+[Issues](https://github.com/TakuyaTsuchiya/wisdombase-lms-skill/issues) からお願いします。
 
 ## ライセンス
 

@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# エディタ
+.vscode/
+.idea/
+*.swp
+*~
+
+# 一時ファイル
+*.log
+*.tmp

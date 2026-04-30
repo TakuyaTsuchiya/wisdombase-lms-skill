@@ -1,7 +1,7 @@
 {
   "name": "wisdombase-lms-skill",
   "description": "WisdomBase LMSのコース構築を自動化するプラグイン",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": {
     "name": "TakuyaTsuchiya"
   },
